@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import DealerLandingPage from './dealer-landing-page';
 import LandingPage from './landing-page';
+import B15ProductPage from './b15-product-page';
 import BookingModal from './booking-modal';
 import QuoteModal from './quote-modal';
 import {
@@ -16,15 +17,16 @@ import {
   Sparkles,
   Phone,
   Ruler,
-  Briefcase
+  Briefcase,
+  Package
 } from 'lucide-react';
 
 type ViewMode = 'split' | 'desktop' | 'mobile' | 'full';
-type PageMode = 'dealer' | 'catalog';
+type PageMode = 'b15' | 'dealer' | 'catalog';
 
 export default function MockupViewer() {
   const [viewMode, setViewMode] = useState<ViewMode>('split');
-  const [pageMode, setPageMode] = useState<PageMode>('dealer');
+  const [pageMode, setPageMode] = useState<PageMode>('b15');
   const [desktopZoom, setDesktopZoom] = useState<number>(0.85);
 
   // Booking & Quote modals
@@ -44,6 +46,15 @@ export default function MockupViewer() {
   };
 
   const renderActivePage = (isMobile = false) => {
+    if (pageMode === 'b15') {
+      return (
+        <B15ProductPage
+          onOpenQuoteModal={handleOpenQuote}
+          onOpenBookingModal={handleOpenBooking}
+          isMobileMockup={isMobile}
+        />
+      );
+    }
     if (pageMode === 'dealer') {
       return (
         <DealerLandingPage
@@ -82,19 +93,32 @@ export default function MockupViewer() {
             </div>
           </div>
 
-          {/* Page Type Selector: Dealer Services vs Main Catalog */}
+          {/* Page Type Selector: B15 PDP vs Dealer Services vs Main Catalog */}
           <div className="flex items-center p-1 bg-stone-900 rounded-xl border border-stone-800">
+            <button
+              onClick={() => setPageMode('b15')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                pageMode === 'b15'
+                  ? 'bg-[#f28a0b] text-white shadow-xs'
+                  : 'text-stone-400 hover:text-stone-200'
+              }`}
+              title="Base Cabinet B15 产品详情页视觉与漏斗优化"
+            >
+              <Package className="w-3.5 h-3.5" />
+              <span>B15 商品详情页优化</span>
+            </button>
+
             <button
               onClick={() => setPageMode('dealer')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 pageMode === 'dealer'
-                  ? 'bg-[#f28a0b] text-white shadow-xs'
+                  ? 'bg-[#003f3f] text-white shadow-xs'
                   : 'text-stone-400 hover:text-stone-200'
               }`}
               title="针对主站的经销商专页 (聚焦服务 + 酌情介绍商品)"
             >
               <Briefcase className="w-3.5 h-3.5" />
-              <span>经销商服务专页 (Dealer Services)</span>
+              <span>经销商服务页</span>
             </button>
 
             <button
@@ -106,7 +130,7 @@ export default function MockupViewer() {
               }`}
               title="主站 RTA 选购页面"
             >
-              <span>主站商品页 (RTA Store)</span>
+              <span>主站首页</span>
             </button>
           </div>
 
@@ -210,13 +234,17 @@ export default function MockupViewer() {
             <div className="flex flex-wrap items-center justify-between text-xs text-stone-400 border-b border-stone-800 pb-3">
               <div className="flex items-center gap-3">
                 <span className="font-bold text-white">
-                  {pageMode === 'dealer'
+                  {pageMode === 'b15'
+                    ? 'Base Cabinet B15 详情页：视觉升级 & 高转化营销漏斗双模对比'
+                    : pageMode === 'dealer'
                     ? '经销商服务专页：桌面端与移动端双模对比'
                     : 'VanStro RTA 主站商品页：双模对比'}
                 </span>
                 <span className="text-stone-600">|</span>
                 <span>
-                  针对温尼伯搜索 &quot;RTA kitchen cabinets in Winnipeg&quot; 以及寻找本地上门量尺、3D出图、安装一条龙服务的客户
+                  {pageMode === 'b15'
+                    ? '保留品牌核心方向，强化 3/4" 实木多层板对比、安装格式选择、关联加购与整厨 3D 设计引流漏斗'
+                    : '针对温尼伯搜索 "RTA kitchen cabinets in Winnipeg" 以及寻找本地上门量尺、3D出图、安装一条龙服务的客户'}
                 </span>
               </div>
               <div className="flex items-center gap-4 text-[11px]">
@@ -235,7 +263,9 @@ export default function MockupViewer() {
                 <div className="flex items-center justify-between pb-2 text-xs font-semibold text-stone-400">
                   <span>DESKTOP MOCKUP (1440 × 900)</span>
                   <span className="text-[11px] font-mono text-stone-500">
-                    {pageMode === 'dealer'
+                    {pageMode === 'b15'
+                      ? 'vanstro.ca/products/base-cabinet-b15-253/'
+                      : pageMode === 'dealer'
                       ? 'vanstro.ca/dealer/winnipeg-services'
                       : 'vanstro.ca/winnipeg-rta-cabinets'}
                   </span>
@@ -254,7 +284,9 @@ export default function MockupViewer() {
                     <div className="flex-1 max-w-md mx-auto bg-stone-950/80 rounded-md px-3 py-1 border border-stone-800 text-[11px] font-mono text-stone-400 flex items-center justify-center gap-2 truncate">
                       <span className="text-emerald-500 text-[10px]">🔒</span>
                       <span>
-                        {pageMode === 'dealer'
+                        {pageMode === 'b15'
+                          ? 'https://www.vanstro.ca/products/base-cabinet-b15-253/'
+                          : pageMode === 'dealer'
                           ? 'https://www.vanstro.ca/dealer/winnipeg-turnkey-services'
                           : 'https://www.vanstro.ca/winnipeg-rta-kitchen-cabinets'}
                       </span>
@@ -311,7 +343,11 @@ export default function MockupViewer() {
           <div className="py-8 px-4 sm:px-8 max-w-[1540px] mx-auto w-full flex flex-col items-center">
             <div className="w-full flex items-center justify-between text-xs text-stone-400 mb-3">
               <span className="font-bold text-white">
-                {pageMode === 'dealer' ? '经销商服务专页 (Desktop 1440px)' : '主站商品页 (Desktop 1440px)'}
+                {pageMode === 'b15'
+                  ? 'Base Cabinet B15 详情页 (Desktop 1440px)'
+                  : pageMode === 'dealer'
+                  ? '经销商服务专页 (Desktop 1440px)'
+                  : '主站商品页 (Desktop 1440px)'}
               </span>
               <span className="text-stone-400 font-mono text-[11px]">
                 Scaled to {(desktopZoom * 100).toFixed(0)}%
@@ -333,7 +369,9 @@ export default function MockupViewer() {
                 <div className="flex-1 max-w-lg mx-auto bg-stone-950 rounded-lg px-3 py-1 border border-stone-800 text-xs font-mono text-stone-300 flex items-center justify-center gap-2 truncate">
                   <span className="text-emerald-400 text-xs">🔒</span>
                   <span>
-                    {pageMode === 'dealer'
+                    {pageMode === 'b15'
+                      ? 'https://www.vanstro.ca/products/base-cabinet-b15-253/'
+                      : pageMode === 'dealer'
                       ? 'https://www.vanstro.ca/dealer/winnipeg-turnkey-services'
                       : 'https://www.vanstro.ca/winnipeg-rta-kitchen-cabinets'}
                   </span>
@@ -355,7 +393,9 @@ export default function MockupViewer() {
           <div className="py-10 px-4 flex flex-col items-center justify-center">
             <div className="text-center mb-6 space-y-1">
               <h2 className="text-lg font-bold text-white">
-                {pageMode === 'dealer'
+                {pageMode === 'b15'
+                  ? 'Base Cabinet B15 详情页 · 移动端视图 (390 × 844)'
+                  : pageMode === 'dealer'
                   ? '经销商服务专页 · 移动端视图 (390 × 844)'
                   : '主站商品页 · 移动端视图 (390 × 844)'}
               </h2>

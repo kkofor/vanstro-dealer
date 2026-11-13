@@ -1,5 +1,5 @@
 import type {Metadata} from 'next';
-import { Plus_Jakarta_Sans } from 'next/font/google';
+import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -84,9 +84,15 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   variable: '--font-sans',
 });
 
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
+});
+
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" className={`scroll-smooth ${plusJakartaSans.variable}`}>
+    <html lang="en" className={`scroll-smooth ${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
       <head>
         <script
           type="application/ld+json"
